@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+    reactStrictMode: true,
+    transpilePackages: ["jotai-devtools"],
 };
 
 export default nextConfig;

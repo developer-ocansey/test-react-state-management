@@ -3,10 +3,14 @@ import {fetcher} from "@/pages/react";
 import {Data} from "@/pages/api/records";
 import {atomEffect} from "jotai-effect";
 import {selectAtom, splitAtom} from "jotai/utils";
-
+import {DevTools} from "jotai-devtools";
 
 const initialRecords: Data[] = []
 const recordsAtom = atom(initialRecords)
+
+// Place selectors outside component to prevent infinite re-renders : https://jotai.org/docs/utilities/select#hold-stable-references
+const nameSelector = (record: any) => record.name
+const updatedAtSelector = (record: any) => record.updatedAt
 
 const recordsEffectAtom = atomEffect((_, set) => {
     const handler = setInterval(() => {
@@ -20,10 +24,6 @@ const recordsEffectAtom = atomEffect((_, set) => {
     }
 })
 
-// Place outside component to prevent infinite re-renders : https://jotai.org/docs/utilities/select#hold-stable-references
-
-const nameSelector = (record: any) => record.name
-const updatedAtSelector = (record: any) => record.updatedAt
 const AtomRecord = ({recordAtom}: any) => {
     const nameAtom = selectAtom(recordAtom, nameSelector)
     const updatedAtAtom = selectAtom(recordAtom, updatedAtSelector)
@@ -59,6 +59,7 @@ const Jotai = () => {
 
     return (
         <>
+            <DevTools isInitialOpen/>
             <h3>Render names using jotai</h3>
             <AtomRecords/>
         </>
